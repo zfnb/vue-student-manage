@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div {
+            min-width: 100px;
+            height: 20px;
+            position: absolute;
+            left: 50%;
+            top: 10%;
+            transform: translateX(-50%);
+            text-align: center;
+            line-height: 20px;
+        }
+
+        .fadeIn {
+            animation: fadeIn .6s forwards;
+        }
+
+        .fadeOut {
+            animation: fadeOut .6s forwards;
+        }
+
+        .content {
+            width: 100%;
+            width: 100%;
+            padding: 5px 15px;
+            border-radius: 5px;
+        }
+
+        .success {
+            background-color: green;
+            color: pink;
+        }
+
+        .error {
+            background-color: red;
+            color: #fff;
+        }
+
+        @keyframes fadeIn {
+            from {
+                top: 0;
+                opacity: 0;
+            }
+            to {
+                top: 50px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                top: 50px;
+                opacity: 1;
+            }
+            to {
+                top: 0;
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<button class="btn">点我</button>
+<script src="https://cdn.bootcss.com/vue/2.6.11/vue.common.dev.js"></script>
+<script>
+    let btn = document.getElementsByClassName('btn')[0];
+    btn.onclick = function () {
+        console.log('click');
+        const vm = new Vue({
+            el: document.createElement('div'),
+            data: {
+                msg: '修改成功',
+                show: true,
+                fade: true,
+                type: 2
+            },
+            computed: {
+                classStyle() {
+                    switch (this.type) {
+                        case 1:
+                            return 'success';
+                            break;
+                        case 2:
+                            return 'error';
+                            break;
+                        default:
+                            return 'error';
+                            break;
+                    }
+                },
+                types() {
+                    switch (this.type) {
+                        case 1:
+                            return '√';
+                            break;
+                        case 2:
+                            return '×';
+                            break;
+                        default:
+                            return '×';
+                            break;
+                    }
+                }
+            },
+            template: `
+                <div id="toast" :class="fade?'fadeIn':'fadeOut'" v-if="show">
+                    <div class="content" :class="classStyle">{{types}}{{msg}}</div>
+                </div>`,
+        })
+        document.body.appendChild(vm.$el);
+        setTimeout(() => {
+            vm.fade = false
+        }, 900)
+        setTimeout(() => {
+            vm.show = false
+        }, 1000)
+
+    }
+
+</script>
+</body>
+</html>
